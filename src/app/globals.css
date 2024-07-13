@@ -21,6 +21,32 @@ body {
   background: white;
 }
 
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background-repeat:  no-repeat;
+  width: 25px;
+  height: 25px;
+  border-width: thin;
+  background-image: url('/date.svg');
+
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: relative;
+  right: 80%;
+}
+input::-webkit-datetime-edit-fields-wrapper {
+  position: relative;
+  left: 10%;
+}
+input::-webkit-datetime-edit {
+  position: relative;
+  left: 20%;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }

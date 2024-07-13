@@ -1,7 +1,8 @@
 "use client"
-import Image from "next/image";
+
+import 'react-datepicker/dist/react-datepicker.css';
 import city_list from "./state_city";
-import { useState ,useRef } from "react";
+import { useState } from "react";
 export default function Home() {
   let states = new Array("Andaman & Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra & Nagar Haveli", "Daman & Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Pondicherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Tripura", "Uttar Pradesh", "Uttaranchal", "West Bengal");
    
@@ -11,13 +12,8 @@ export default function Home() {
     let cities = city_list(e);
     setCity(cities);
   }
-  
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  const dateInputRef = useRef(null);
-
-  const handleIconClick = () => {
-    dateInputRef.current.focus();
-  };
 
   const [dragging, setDragging] = useState(false);
   const [files, setFiles] = useState([]);
@@ -45,13 +41,13 @@ export default function Home() {
     e.stopPropagation();
     setDragging(false);
     const droppedFiles = Array.from(e.dataTransfer.files);
-    setFiles(droppedFiles);
+    setFiles((oldfiles)=>[...oldfiles , ...droppedFiles]);
     console.log(droppedFiles);
   };
 
   const handleFileSelect = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    setFiles(selectedFiles);
+    setFiles((oldfiles)=>[...oldfiles , ...selectedFiles]);
     console.log(selectedFiles);
   };
   
@@ -133,7 +129,7 @@ export default function Home() {
   <button class="border-[1px]  border-[#e2dfdf] text-gray-800 rounded-full flex items-center justify-center w-10 h-10">
   <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_1_88)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M5.20834 9.37501C5.20834 7.44114 5.97657 5.58648 7.34402 4.21902C8.71147 2.85157 10.5661 2.08334 12.5 2.08334C14.4339 2.08334 16.2885 2.85157 17.656 4.21902C19.0234 5.58648 19.7917 7.44114 19.7917 9.37501V13.2958L21.6896 17.0917C21.777 17.2664 21.8182 17.4605 21.8094 17.6557C21.8007 17.8508 21.7421 18.0405 21.6394 18.2066C21.5367 18.3728 21.3933 18.5099 21.2226 18.605C21.052 18.7001 20.8599 18.75 20.6646 18.75H16.5354C16.3037 19.644 15.7817 20.4358 15.0513 21.001C14.3209 21.5662 13.4235 21.8729 12.5 21.8729C11.5765 21.8729 10.6791 21.5662 9.94869 21.001C9.21831 20.4358 8.6963 19.644 8.46459 18.75H4.33543C4.14009 18.75 3.94799 18.7001 3.77737 18.605C3.60675 18.5099 3.46328 18.3728 3.36058 18.2066C3.25788 18.0405 3.19936 17.8508 3.19058 17.6557C3.1818 17.4605 3.22306 17.2664 3.31043 17.0917L5.20834 13.2958V9.37501ZM10.6958 18.75C10.8787 19.0667 11.1417 19.3297 11.4584 19.5125C11.7751 19.6953 12.1343 19.7916 12.5 19.7916C12.8657 19.7916 13.2249 19.6953 13.5416 19.5125C13.8583 19.3297 14.1213 19.0667 14.3042 18.75H10.6958ZM12.5 4.16668C11.1187 4.16668 9.79391 4.71541 8.81716 5.69216C7.84041 6.66891 7.29168 7.99367 7.29168 9.37501V13.2958C7.29165 13.6191 7.2164 13.9379 7.07188 14.2271L5.85313 16.6667H19.1479L17.9292 14.2271C17.7843 13.938 17.7087 13.6192 17.7083 13.2958V9.37501C17.7083 7.99367 17.1596 6.66891 16.1829 5.69216C15.2061 4.71541 13.8813 4.16668 12.5 4.16668Z" fill="black" fill-opacity="0.6"/>
+<path fill-rule="evenodd" clipRule="evenodd" d="M5.20834 9.37501C5.20834 7.44114 5.97657 5.58648 7.34402 4.21902C8.71147 2.85157 10.5661 2.08334 12.5 2.08334C14.4339 2.08334 16.2885 2.85157 17.656 4.21902C19.0234 5.58648 19.7917 7.44114 19.7917 9.37501V13.2958L21.6896 17.0917C21.777 17.2664 21.8182 17.4605 21.8094 17.6557C21.8007 17.8508 21.7421 18.0405 21.6394 18.2066C21.5367 18.3728 21.3933 18.5099 21.2226 18.605C21.052 18.7001 20.8599 18.75 20.6646 18.75H16.5354C16.3037 19.644 15.7817 20.4358 15.0513 21.001C14.3209 21.5662 13.4235 21.8729 12.5 21.8729C11.5765 21.8729 10.6791 21.5662 9.94869 21.001C9.21831 20.4358 8.6963 19.644 8.46459 18.75H4.33543C4.14009 18.75 3.94799 18.7001 3.77737 18.605C3.60675 18.5099 3.46328 18.3728 3.36058 18.2066C3.25788 18.0405 3.19936 17.8508 3.19058 17.6557C3.1818 17.4605 3.22306 17.2664 3.31043 17.0917L5.20834 13.2958V9.37501ZM10.6958 18.75C10.8787 19.0667 11.1417 19.3297 11.4584 19.5125C11.7751 19.6953 12.1343 19.7916 12.5 19.7916C12.8657 19.7916 13.2249 19.6953 13.5416 19.5125C13.8583 19.3297 14.1213 19.0667 14.3042 18.75H10.6958ZM12.5 4.16668C11.1187 4.16668 9.79391 4.71541 8.81716 5.69216C7.84041 6.66891 7.29168 7.99367 7.29168 9.37501V13.2958C7.29165 13.6191 7.2164 13.9379 7.07188 14.2271L5.85313 16.6667H19.1479L17.9292 14.2271C17.7843 13.938 17.7087 13.6192 17.7083 13.2958V9.37501C17.7083 7.99367 17.1596 6.66891 16.1829 5.69216C15.2061 4.71541 13.8813 4.16668 12.5 4.16668Z" fill="black" fillOpacity="0.6"/>
 <circle cx="18" cy="4" r="4" fill="#ED0505"/>
 </g>
 <defs>
@@ -281,25 +277,25 @@ export default function Home() {
 <div className="grid grid-cols-5  gap-8 mt-4">
 
 <div className=" ml-4 rounded-md p-1 pl-2 pr-2">
-<label for="vendor-id" class="block text-sm font-medium leading-6 text-gray-900">Vendor ID</label>
+<label htmlFor="vendor-id" class="block text-sm font-medium leading-6 text-gray-900">Vendor ID</label>
           <div class="mt-2">
             <input type="text" name="vendor-id" id="vendor-id" autoComplete="id" class="bg-[#EBF5FF]/50 block min-h-9 w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-[#EBF5FF]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#EBF5FF]/50 sm:text-sm sm:leading-6" value={"AMZ2034566"} readOnly/>
           </div>
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-<label for="legal-name" class="block text-sm font-medium leading-6 text-gray-900">Legal Name*</label>
+<label htmlFor="legal-name" class="block text-sm font-medium leading-6 text-gray-900">Legal Name*</label>
           <div class="mt-2">
             <input type="text" name="legal-name" id="legal-name" autoComplete="Company" class="block min-h-9 w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6" required/>
           </div>
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-<label for="trade-name" class="block text-sm font-medium leading-6 text-gray-900">Trade Name*</label>
+<label htmlFor="trade-name" class="block text-sm font-medium leading-6 text-gray-900">Trade Name*</label>
           <div class="mt-2">
             <input type="text" name="trade-name" id="trade-name" autoComplete="Company" class="block min-h-9 w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6" required/>
           </div>
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-<label for="vendor-state" class="block text-sm font-medium leading-6 text-gray-900">Vendor State*</label>
+<label htmlFor="vendor-state" class="block text-sm font-medium leading-6 text-gray-900">Vendor State*</label>
           <div class="mt-2">
             <select id="vendor-state" name="vendor-state" autoComplete="state" class="block w-full min-h-9 rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6" onChange={find_city}>
               {
@@ -313,7 +309,7 @@ export default function Home() {
           </div>
 </div>
 <div className=" mr-4 rounded-md p-1 pl-2 pr-2">
-<label for="vendor-location" class="block text-sm font-medium leading-6 text-gray-900">Vendor Location*</label>
+<label htmlFor="vendor-location" class="block text-sm font-medium leading-6 text-gray-900">Vendor Location*</label>
           <div class="mt-2">
             <select id="vendor-location" name="vendor-location" autoComplete="city" class="block w-full min-h-9 rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6">
             {
@@ -337,17 +333,17 @@ export default function Home() {
 </label>
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-<label for="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">GST Certificate*</label>
+<label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">GST Certificate*</label>
           <div class="mt-2">
         <label htmlFor="file-upload" className="cursor-pointer">
           <div
-            id="drop-area"
+            id="file-upload"
             className={`flex min-h-9 flex-col items-center justify-center rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#017194]/20  ${dragging ? 'border-gray-400 bg-[#2E5A75]' : 'border-gray-300 bg-[#EBF5FF] hover:bg-[#EBF5FF]/50'}`}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onClick={() => document.getElementById('file-upload').click()}
+            onClick={() => document.getElementById('file-upload1').click()}
           >
             <div className="flex justify-center items-center">
             <span className="text-xs text-[#2E5A75]">Browse or drop files &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -361,10 +357,9 @@ export default function Home() {
           </div>
         </label>
         <input
-          id="file-upload"
+          id="file-upload1"
           type="file"
           className="hidden"
-          
           onChange={handleFileSelect}
         />
       </div>
@@ -374,13 +369,13 @@ export default function Home() {
          
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-  <label for="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">Payment Terms</label>
+  <label htmlFor="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">Payment Terms</label>
           <div class="mt-2">
             <input type="text" name="payment-terms" id="payment-terms" autoComplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
           </div>
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-<label for="pan-attachment" class="block text-sm font-medium leading-6 text-gray-900">PAN Attachment*</label>
+<label htmlFor="pan-attachment" class="block text-sm font-medium leading-6 text-gray-900">PAN Attachment*</label>
 <div class="mt-2">
         <label htmlFor="file-upload" className="cursor-pointer">
           <div
@@ -413,7 +408,7 @@ export default function Home() {
       </div>
 </div>
 <div className=" mr-4 rounded-md p-1 pl-2 pr-2">
-<label for="policy" class="block text-sm font-medium leading-6 text-gray-900">Policy*</label>
+<label htmlFor="policy" class="block text-sm font-medium leading-6 text-gray-900">Policy*</label>
           <div class="mt-2">
             <select id="policy" name="policy" autoComplete="policy" class="block w-full min-h-9 rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6">
               <option>Marketing All</option>
@@ -423,7 +418,7 @@ export default function Home() {
           </div>
 </div>
 <div className=" ml-4 rounded-md p-1 pl-2 pr-2 col-span-2">
-<label for="vendor-address" class="block text-sm font-medium leading-6 text-gray-900">Vendor address</label>
+<label htmlFor="vendor-address" class="block text-sm font-medium leading-6 text-gray-900">Vendor address</label>
           <div class="mt-2">
             <input type="text" name="vendor-address" id="vendor-address" autoComplete="address-level2" class="block min-h-9 w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
           </div>
@@ -446,7 +441,7 @@ export default function Home() {
 
 <div className=" ml-4 rounded-md p-1 pl-2 pr-2">
 <label class="block text-sm font-medium leading-6 text-gray-900 cursor-pointer">
-  <span class="text-sm font-medium text-gray-900 dark:text-gray-300">GST Registered</span>
+  <span class="text-sm font-medium text-gray-900 dark:text-gray-300">MSME Registered</span>
   <div className="mt-4">
   <input type="checkbox" value="" class="sr-only peer"/>
   <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none  dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600  peer-checked:bg-[#5AB860]">
@@ -456,11 +451,11 @@ export default function Home() {
 </label>
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-<label for="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">GST Certificate*</label>
+<label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">MSME Attachment*</label>
           <div class="mt-2">
-        <label htmlFor="file-upload" className="cursor-pointer">
+        <label htmlFor="msme" className="cursor-pointer">
           <div
-            id="drop-area"
+            id="msme"
             className={`flex min-h-9 flex-col items-center justify-center rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#017194]/20  ${dragging ? 'border-gray-400 bg-[#2E5A75]' : 'border-gray-300 bg-[#EBF5FF] hover:bg-[#EBF5FF]/50'}`}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
@@ -491,9 +486,9 @@ export default function Home() {
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
 <label class="block text-sm font-medium leading-6 text-gray-900 cursor-pointer">
-  <span class="text-sm font-medium text-gray-900 dark:text-gray-300">GST Registered</span>
+  <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Lower Exception</span>
   <div className="mt-4">
-  <input type="checkbox" value="" class="sr-only peer"/>
+  <input id="ldc-exception" type="checkbox" value="" class="sr-only peer"/>
   <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none  dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600  peer-checked:bg-[#5AB860]">
   </div>
   </div>
@@ -501,11 +496,11 @@ export default function Home() {
 </label>
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2">
-<label for="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">GST Certificate*</label>
+<label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">Lower exception certificate</label>
           <div class="mt-2">
-        <label htmlFor="file-upload" className="cursor-pointer">
+        <label htmlFor="lower-exception-certificate" className="cursor-pointer">
           <div
-            id="drop-area"
+            id="lower-exception-certificate"
             className={`flex min-h-9 flex-col items-center justify-center rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#017194]/20  ${dragging ? 'border-gray-400 bg-[#2E5A75]' : 'border-gray-300 bg-[#EBF5FF] hover:bg-[#EBF5FF]/50'}`}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
@@ -535,49 +530,39 @@ export default function Home() {
 
 </div>
 <div className=" mr-4 rounded-md p-1 pl-2 pr-2">
-<label for="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">Payment Terms</label>
+<label htmlFor="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">LDC Upper Limit</label>
           <div class="mt-2">
-            <input type="text" name="payment-terms" id="payment-terms" autoComplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
+            <input type="text" name="ldc" id="ldc" autoComplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
           </div>
 </div>
 
 
 <div className="rounded-md p-1 pl-2 pr-2">
-  <label for="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">GST Certificate*</label>
-
-<div class="relative max-w-sm">
-  <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-    </svg>
-  </div>
-  <input
-        ref={dateInputRef}
-        type="date"
-        className="p-2 pl-10 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-        style={{
-          WebkitAppearance: 'none',
-          MozAppearance: 'none',
-          appearance: 'none',
-          position: 'relative',
-          zIndex: 10,
-          background: 'none',
-        }}
-      />
-
-      
+  <label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">LDC Start Date*</label>
+  
+  <div className="mt-2 ">
+  <input id="ldc-start-date" className="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6 date" type="date" placeholder="Date and Time"/>
+  </div> 
+  
 </div>
 
+
+<div className="rounded-md p-1 pl-2 pr-2">
+  <label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">LDC End Date*</label>
+  
+  <div className="mt-2 ">
+  <input id="ldc-end-date" className="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6 date" type="date" placeholder="Date and Time"/>
+  </div> 
   
 </div>
 
 
 <div className="col-start-4 rounded-md p-1 pl-2 pr-2">
-<label for="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">GST Certificate*</label>
+<label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">Lower exception Certificate</label>
           <div class="mt-2">
-        <label htmlFor="file-upload" className="cursor-pointer">
+        <label htmlFor="ldc-except" className="cursor-pointer">
           <div
-            id="drop-area"
+            id="ldc-except"
             className={`flex min-h-9 flex-col items-center justify-center rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#017194]/20  ${dragging ? 'border-gray-400 bg-[#2E5A75]' : 'border-gray-300 bg-[#EBF5FF] hover:bg-[#EBF5FF]/50'}`}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
@@ -610,9 +595,9 @@ export default function Home() {
          
 </div>
 <div className=" rounded-md p-1 pl-2 pr-2 mr-4">
-  <label for="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">Payment Terms</label>
+  <label htmlFor="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">PAN Number</label>
           <div class="mt-2">
-            <input type="text" name="payment-terms" id="payment-terms" autoComplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
+            <input type="text" name="pan-number" id="pan-number" autoComplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
           </div>
 </div>
 
@@ -632,6 +617,175 @@ export default function Home() {
   </div>
 
 
+<form action="">
+<div className="grid grid-cols-5  gap-8 mt-4">
+
+<div className=" ml-4 rounded-md p-1 pl-2 pr-2">
+<label class="block text-sm font-medium leading-6 text-gray-900 cursor-pointer">
+  <span class="text-sm font-medium text-gray-900 dark:text-gray-300">MSME Registered</span>
+  <div className="mt-4">
+  <input type="checkbox" value="" class="sr-only peer"/>
+  <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none  dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600  peer-checked:bg-[#5AB860]">
+  </div>
+  </div>
+  
+</label>
+</div>
+<div className=" rounded-md p-1 pl-2 pr-2">
+<label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">MSME Attachment*</label>
+          <div class="mt-2">
+        <label htmlFor="msme" className="cursor-pointer">
+          <div
+            id="msme"
+            className={`flex min-h-9 flex-col items-center justify-center rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#017194]/20  ${dragging ? 'border-gray-400 bg-[#2E5A75]' : 'border-gray-300 bg-[#EBF5FF] hover:bg-[#EBF5FF]/50'}`}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={() => document.getElementById('file-upload').click()}
+          >
+            <div className="flex justify-center items-center">
+            <span className="text-xs text-[#2E5A75]">Browse or drop files &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span className="">
+              <svg  width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 3.6L3 6.6L3.84 7.44L5.4 5.895L5.4 12H6.6L6.6 5.895L8.16 7.44L9 6.6L6 3.6ZM0.99 9.3C0.67 8.81 0.425 8.285 0.255 7.725C0.085 7.165 0 6.59 0 6C0 5.17 0.1576 4.39 0.4728 3.66C0.788 2.93 1.2154 2.295 1.755 1.755C2.295 1.215 2.93 0.7876 3.66 0.4728C4.39 0.158 5.17 0.0004 6 0C6.83 0 7.61 0.1576 8.34 0.4728C9.07 0.788 9.705 1.2154 10.245 1.755C10.785 2.295 11.2126 2.93 11.5278 3.66C11.843 4.39 12.0004 5.17 12 6C12 6.59 11.915 7.165 11.745 7.725C11.575 8.285 11.33 8.81 11.01 9.3L10.14 8.43C10.36 8.06 10.525 7.67 10.635 7.26C10.745 6.85 10.8 6.43 10.8 6C10.8 4.66 10.335 3.525 9.405 2.595C8.475 1.665 7.34 1.2 6 1.2C4.66 1.2 3.525 1.665 2.595 2.595C1.665 3.525 1.2 4.66 1.2 6C1.2 6.43 1.255 6.85 1.365 7.26C1.475 7.67 1.64 8.06 1.86 8.43L0.99 9.3Z" fill="#2E5A75"/>
+            </svg>
+            </span>
+            </div>
+
+          </div>
+        </label>
+        <input
+          id="file-upload"
+          type="file"
+          className="hidden"
+          
+          onChange={handleFileSelect}
+        />
+      </div>
+
+</div>
+<div className=" rounded-md p-1 pl-2 pr-2">
+<label class="block text-sm font-medium leading-6 text-gray-900 cursor-pointer">
+  <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Lower Exception</span>
+  <div className="mt-4">
+  <input id="ldc-exception" type="checkbox" value="" class="sr-only peer"/>
+  <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none  dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600  peer-checked:bg-[#5AB860]">
+  </div>
+  </div>
+  
+</label>
+</div>
+<div className=" rounded-md p-1 pl-2 pr-2">
+<label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">Lower exception certificate</label>
+          <div class="mt-2">
+        <label htmlFor="lower-exception-certificate" className="cursor-pointer">
+          <div
+            id="lower-exception-certificate"
+            className={`flex min-h-9 flex-col items-center justify-center rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#017194]/20  ${dragging ? 'border-gray-400 bg-[#2E5A75]' : 'border-gray-300 bg-[#EBF5FF] hover:bg-[#EBF5FF]/50'}`}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={() => document.getElementById('file-upload').click()}
+          >
+            <div className="flex justify-center items-center">
+            <span className="text-xs text-[#2E5A75]">Browse or drop files &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span className="">
+              <svg  width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 3.6L3 6.6L3.84 7.44L5.4 5.895L5.4 12H6.6L6.6 5.895L8.16 7.44L9 6.6L6 3.6ZM0.99 9.3C0.67 8.81 0.425 8.285 0.255 7.725C0.085 7.165 0 6.59 0 6C0 5.17 0.1576 4.39 0.4728 3.66C0.788 2.93 1.2154 2.295 1.755 1.755C2.295 1.215 2.93 0.7876 3.66 0.4728C4.39 0.158 5.17 0.0004 6 0C6.83 0 7.61 0.1576 8.34 0.4728C9.07 0.788 9.705 1.2154 10.245 1.755C10.785 2.295 11.2126 2.93 11.5278 3.66C11.843 4.39 12.0004 5.17 12 6C12 6.59 11.915 7.165 11.745 7.725C11.575 8.285 11.33 8.81 11.01 9.3L10.14 8.43C10.36 8.06 10.525 7.67 10.635 7.26C10.745 6.85 10.8 6.43 10.8 6C10.8 4.66 10.335 3.525 9.405 2.595C8.475 1.665 7.34 1.2 6 1.2C4.66 1.2 3.525 1.665 2.595 2.595C1.665 3.525 1.2 4.66 1.2 6C1.2 6.43 1.255 6.85 1.365 7.26C1.475 7.67 1.64 8.06 1.86 8.43L0.99 9.3Z" fill="#2E5A75"/>
+            </svg>
+            </span>
+            </div>
+
+          </div>
+        </label>
+        <input
+          id="file-upload"
+          type="file"
+          className="hidden"
+          
+          onChange={handleFileSelect}
+        />
+      </div>
+
+</div>
+<div className=" mr-4 rounded-md p-1 pl-2 pr-2">
+<label htmlFor="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">LDC Upper Limit</label>
+          <div class="mt-2">
+            <input type="text" name="ldc" id="ldc" autoComplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
+          </div>
+</div>
+
+
+<div className="rounded-md p-1 pl-2 pr-2">
+  <label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">LDC Start Date*</label>
+  
+  <div className="mt-2 ">
+  <input id="ldc-start-date" className="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6 date" type="date" placeholder="Date and Time"/>
+  </div> 
+  
+</div>
+
+
+<div className="rounded-md p-1 pl-2 pr-2">
+  <label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">LDC End Date*</label>
+  
+  <div className="mt-2 ">
+  <input id="ldc-end-date" className="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6 date" type="date" placeholder="Date and Time"/>
+  </div> 
+  
+</div>
+
+
+<div className="col-start-4 rounded-md p-1 pl-2 pr-2">
+<label htmlFor="gst-certificate" class="block text-sm font-medium leading-6 text-gray-900">Lower exception Certificate</label>
+          <div class="mt-2">
+        <label htmlFor="ldc-except" className="cursor-pointer">
+          <div
+            id="ldc-except"
+            className={`flex min-h-9 flex-col items-center justify-center rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#017194]/20  ${dragging ? 'border-gray-400 bg-[#2E5A75]' : 'border-gray-300 bg-[#EBF5FF] hover:bg-[#EBF5FF]/50'}`}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={() => document.getElementById('file-upload').click()}
+          >
+            <div className="flex justify-center items-center">
+            <span className="text-xs text-[#2E5A75]">Browse or drop files &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span className="">
+              <svg  width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 3.6L3 6.6L3.84 7.44L5.4 5.895L5.4 12H6.6L6.6 5.895L8.16 7.44L9 6.6L6 3.6ZM0.99 9.3C0.67 8.81 0.425 8.285 0.255 7.725C0.085 7.165 0 6.59 0 6C0 5.17 0.1576 4.39 0.4728 3.66C0.788 2.93 1.2154 2.295 1.755 1.755C2.295 1.215 2.93 0.7876 3.66 0.4728C4.39 0.158 5.17 0.0004 6 0C6.83 0 7.61 0.1576 8.34 0.4728C9.07 0.788 9.705 1.2154 10.245 1.755C10.785 2.295 11.2126 2.93 11.5278 3.66C11.843 4.39 12.0004 5.17 12 6C12 6.59 11.915 7.165 11.745 7.725C11.575 8.285 11.33 8.81 11.01 9.3L10.14 8.43C10.36 8.06 10.525 7.67 10.635 7.26C10.745 6.85 10.8 6.43 10.8 6C10.8 4.66 10.335 3.525 9.405 2.595C8.475 1.665 7.34 1.2 6 1.2C4.66 1.2 3.525 1.665 2.595 2.595C1.665 3.525 1.2 4.66 1.2 6C1.2 6.43 1.255 6.85 1.365 7.26C1.475 7.67 1.64 8.06 1.86 8.43L0.99 9.3Z" fill="#2E5A75"/>
+            </svg>
+            </span>
+            </div>
+
+          </div>
+        </label>
+        <input
+          id="file-upload"
+          type="file"
+          className="hidden"
+          
+          onChange={handleFileSelect}
+        />
+      </div>
+
+
+            
+         
+</div>
+<div className=" rounded-md p-1 pl-2 pr-2 mr-4">
+  <label htmlFor="payment-terms" class="block text-sm font-medium leading-6 text-gray-900">PAN Number</label>
+          <div class="mt-2">
+            <input type="text" name="pan-number" id="pan-number" autoComplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-black min-h-9 shadow-sm ring-1 ring-inset ring-[#017194]/20 p-1 pl-3 pr-3 placeholder:text-gray-400  focus:ring-inset focus:ring-[#2E5A75]/50 sm:text-sm sm:leading-6"/>
+          </div>
+</div>
+
+
+</div>
+</form>
+
 
 </div>
 
@@ -642,8 +796,16 @@ export default function Home() {
 
 
 {/* right div to scrollable div */}
-<div className=" basis-1/6 p-1 mr-4 rounded-md border-[1px]">dssfsdfs
-
+<div className=" basis-1/6 p-1 mr-4 rounded-md border-[1px]">
+<ul className="flex justify-between items-center">
+  
+  <li className="mx-3 font-bold text-[#2E5A75]">Attachments</li>
+  <li><svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.9351 3.32577C11.9918 3.26571 12.0601 3.21786 12.136 3.18516C12.2118 3.15246 12.2935 3.13559 12.3761 3.13559C12.4587 3.13559 12.5404 3.15246 12.6163 3.18516C12.6921 3.21786 12.7605 3.26571 12.8172 3.32577C13.0609 3.57926 13.0609 3.99005 12.8172 4.24355L5.3223 12.0492C5.03896 12.3495 4.69727 12.5887 4.31817 12.7522C3.93907 12.9157 3.53057 13 3.11772 13C2.70486 13 2.29636 12.9157 1.91727 12.7522C1.53817 12.5887 1.19647 12.3495 0.913133 12.0492C-0.304378 10.7817 -0.304378 8.72584 0.913133 7.45772L7.52591 0.570486C7.69593 0.39033 7.90096 0.2468 8.12843 0.148701C8.35589 0.0506014 8.60101 0 8.84873 0C9.09645 0 9.34156 0.0506014 9.56903 0.148701C9.7965 0.2468 10.0015 0.39033 10.1715 0.570486C10.9022 1.33097 10.9022 2.56464 10.1715 3.32577L4.43956 9.29327C4.38288 9.35323 4.31455 9.40099 4.23877 9.43363C4.16299 9.46627 4.08135 9.48311 3.99884 9.48311C3.91633 9.48311 3.83468 9.46627 3.7589 9.43363C3.68312 9.40099 3.6148 9.35323 3.55812 9.29327C3.44091 9.16923 3.3756 9.00504 3.3756 8.83438C3.3756 8.66373 3.44091 8.49954 3.55812 8.37549L9.2901 2.40669C9.4075 2.28261 9.47292 2.11829 9.47292 1.94748C9.47292 1.77667 9.4075 1.61234 9.2901 1.48826C9.23341 1.42821 9.16505 1.38036 9.08921 1.34766C9.01337 1.31495 8.93165 1.29809 8.84905 1.29809C8.76646 1.29809 8.68474 1.31495 8.6089 1.34766C8.53306 1.38036 8.4647 1.42821 8.40801 1.48826L1.79393 8.3768C1.06394 9.13728 1.06394 10.3709 1.79393 11.1314C1.96394 11.3116 2.16897 11.4551 2.39644 11.5532C2.62391 11.6513 2.86902 11.7019 3.11674 11.7019C3.36447 11.7019 3.60958 11.6513 3.83705 11.5532C4.06451 11.4551 4.26954 11.3116 4.43956 11.1314L11.9351 3.32577Z" fill="#2E5A75"/>
+</svg>
+</li>
+</ul>
+<hr className="-mr-1 -ml-1 mt-1" />
 </div>
 </div>
 </main>
